@@ -3,7 +3,6 @@
 
 import os
 import random
-import re
 import sys
 
 from colorama import Fore, Back
@@ -18,6 +17,10 @@ def get_in(prompt: str) -> str:
     sys.stdout.write(prompt)
     sys.stdout.flush()
     return sys.stdin.readline()
+
+# TODO - doesn't work for German or Turkish
+def okay(word: str, length: int) -> bool:
+    return len(word) == length and word.islower()
 
 p(Fore.LIGHTBLUE_EX, "Welcome to dictle!")
 dictionary = get_in("What dictionary are we using? [/usr/share/dict/words]: ")
@@ -35,9 +38,7 @@ with open(dictionary, "r") as f:
 length = int(get_in("What length words would you like? [5]: "))
 assert(length > 0)
 
-# TODO - only works for English
-okay = re.compile("[a-z]{" + str(length) + "}$")
-words = [word for word in words if okay.match(word)]
+words = [word for word in words if okay(word, length)]
 random.shuffle(words)
 
 words_set = set(words) # keep a copy of the wordlist around
