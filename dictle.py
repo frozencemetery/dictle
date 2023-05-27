@@ -16,7 +16,9 @@ def w(c: str, text: str) -> int:
 def get_in(prompt: str) -> str:
     sys.stdout.write(prompt)
     sys.stdout.flush()
-    return sys.stdin.readline()
+    ret = sys.stdin.readline()
+    assert(ret[-1] == "\n")
+    return ret[:-1]
 
 # TODO - doesn't work for German or Turkish
 def okay(word: str, length: int) -> bool:
@@ -24,8 +26,6 @@ def okay(word: str, length: int) -> bool:
 
 p(Fore.LIGHTBLUE_EX, "Welcome to dictle!")
 dictionary = get_in("What dictionary are we using? [/usr/share/dict/words]: ")
-assert(dictionary[-1] == "\n")
-dictionary = dictionary[:-1]
 if len(dictionary) == 0:
     dictionary = "/usr/share/dict/words"
 if not os.path.exists(dictionary):
@@ -35,7 +35,10 @@ if not os.path.exists(dictionary):
 with open(dictionary, "r") as f:
     words = f.read().split("\n")
 
-length = int(get_in("What length words would you like? [5]: "))
+length_raw = get_in("What length words would you like? [5]: ")
+if length_raw == "":
+    length_raw = "5"
+length = int(length_raw)
 assert(length > 0)
 
 words = [word for word in words if okay(word, length)]
