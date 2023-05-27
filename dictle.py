@@ -11,7 +11,20 @@ from colorama import Fore, Back
 def p(c: str, text: str) -> None:
     return print(f"{c}{text}{Fore.RESET}")
 
-dictionary = "/usr/share/dict/words"
+def w(c: str, text: str) -> int:
+    return sys.stdout.write(f"{c}{text}{Back.RESET}")
+
+def get_in(prompt: str) -> str:
+    sys.stdout.write(prompt)
+    sys.stdout.flush()
+    return sys.stdin.readline()
+
+p(Fore.LIGHTBLUE_EX, "Welcome to dictle!")
+dictionary = get_in("What dictionary are we using? [/usr/share/dict/words]: ")
+assert(dictionary[-1] == "\n")
+dictionary = dictionary[:-1]
+if len(dictionary) == 0:
+    dictionary = "/usr/share/dict/words"
 if not os.path.exists(dictionary):
     print(f"{dictionary} not found; giving up")
     exit(1)
@@ -19,12 +32,13 @@ if not os.path.exists(dictionary):
 with open(dictionary, "r") as f:
     words = f.read().split("\n")
 
+length = int(get_in("What length words would you like? [5]: "))
+assert(length > 0)
+
 # TODO - only works for English
-okay = re.compile("[a-z]{5}$")
+okay = re.compile("[a-z]{" + str(length) + "}$")
 words = [word for word in words if okay.match(word)]
 random.shuffle(words)
-
-p(Fore.LIGHTBLUE_EX, "Welcome to dictle!")
 
 words_set = set(words) # keep a copy of the wordlist around
 word = words.pop()
@@ -39,7 +53,7 @@ while True:
     sys.stdout.write("\033[F\033[K")
     sys.stdout.flush()
     
-    if len(line) != 5:
+    if len(line) != length:
         p(Fore.RED, "Wrong length - try again")
         continue
     elif line == word:
@@ -53,10 +67,10 @@ while True:
     word_letters = set(word)
     for i, letter in enumerate(list(line)):
         if word[i] == letter:
-            sys.stdout.write(f"{Back.GREEN}{letter}{Back.RESET}")
+            w(Back.GREEN, letter)
         elif letter in word_letters:
             # yellow typically is tinted toward orange
-            sys.stdout.write(f"{Back.YELLOW}{letter}{Back.RESET}")
+            w(Back.YELLOW, letter)
         else:
             sys.stdout.write(letter)
     print()
