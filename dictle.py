@@ -68,13 +68,20 @@ while True:
         p(Fore.RED, f"\"{line}\" is not in the dictionary")
         continue
 
-    word_letters = set(word)
-    for i, letter in enumerate(list(line)):
-        if word[i] == letter:
-            w(Back.GREEN, letter)
-        elif letter in word_letters:
+    # Conduct two passes so that we flag the right number of missing letters.
+    missing: list[str] = []
+    z = list(zip(list(word), list(line))) # zip results drain
+    for wl, ll in z:
+        if ll != wl:
+            missing += wl
+
+    for wl, ll in z:
+        if wl == ll:
+            w(Back.GREEN, ll)
+        elif ll in missing:
+            missing.remove(ll)
             # yellow typically is tinted toward orange
-            w(Back.YELLOW, letter)
+            w(Back.YELLOW, ll)
         else:
-            sys.stdout.write(letter)
+            sys.stdout.write(ll)
     print()
