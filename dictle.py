@@ -64,6 +64,9 @@ while True:
         p(Fore.LIGHTGREEN_EX, word)
         p(Fore.LIGHTBLUE_EX, "Congratulations - you win!")
         exit(0)
+    elif not okay(line, length):
+        p(Fore.RED, f"\"{line}\" contains invalid characters")
+        continue
     elif line not in words_set:
         p(Fore.RED, f"\"{line}\" is not in the dictionary")
         continue
