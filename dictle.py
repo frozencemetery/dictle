@@ -22,7 +22,7 @@ def get_in(prompt: str) -> str:
 
 # TODO - doesn't work for German or Turkish
 def okay(word: str, length: int) -> bool:
-    return len(word) == length and word.islower()
+    return len(word) == length and word.islower() and word.isalpha()
 
 p(Fore.LIGHTBLUE_EX, "Welcome to dictle!")
 dictionary = get_in("What dictionary are we using? [/usr/share/dict/words]: ")
