@@ -34,7 +34,11 @@ def run_one_dictle(word: str, length: int, words_set: set[str]) -> None:
         sys.stdout.write("\033[F\033[K")
         sys.stdout.flush()
 
-        if len(line) != length:
+        if line == "give up":
+            p(Fore.RED, "give up")
+            p(Fore.LIGHTCYAN_EX, f"Word was \"{word}\"")
+            return
+        elif len(line) != length:
             p(Fore.RED, "Wrong length - try again")
             continue
         elif line == word:
@@ -92,5 +96,6 @@ if __name__ == "__main__":
     words_set = set(words) # keep a copy of the wordlist around
     while True:
         word = words.pop()
-        p(Fore.LIGHTBLUE_EX, "Word selected.  Guess away!")
+        p(Fore.LIGHTBLUE_EX,
+          "Word selected; guess away!  Give up by typing \"give up\"")
         run_one_dictle(word, length, words_set)
