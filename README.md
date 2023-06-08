@@ -7,6 +7,16 @@ An example screenshot:
 
 ![](example.png "A wordle-like game, with colors, in the console")
 
+## Things you might like
+
+- user-specified dictionaries (e.g., non-American, or non-English)
+- no guess limit
+- any word length
+- uses your terminal, not a web browser
+- colors
+- source code
+- donut
+
 ## Limitations
 
 Input dictionaries are filtered to exclude proper nouns and words with
